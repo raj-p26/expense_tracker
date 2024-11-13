@@ -1,12 +1,35 @@
 import "./jquery.js";
 
-const THEME = localStorage.getItem("theme") || "light";
-const icon = THEME === "dark" ? "light_mode" : "dark_mode";
+const USER_TOKEN = localStorage.getItem("token");
 const TOKEN = localStorage.getItem("token");
 
+/**
+ * @returns {[string, string]} theme mode and icon
+ */
+const getTheme = () => {
+  const THEME = localStorage.getItem("theme") || "light";
+  const icon = THEME === "light" ? "dark" : "light";
+
+  return [THEME, icon];
+};
+
+const setupTheme = (theme, icon) => {
+  $("html").attr("data-bs-theme", theme);
+  $("img#theme-icon").attr("src", `./images/${icon}_mode.svg`);
+};
+
+/**
+ * @returns {string}
+ */
+export let getProjectPath = () => window.location.pathname;
+
+if (!USER_TOKEN && !getProjectPath().endsWith("/auth"))
+  location.href = "./auth";
+
 $(window).on("load", () => {
-  $("html").attr("data-bs-theme", THEME);
-  $("img#theme-icon").attr("src", `./images/${icon}.svg`);
+  const [mode, icon] = getTheme();
+  setupTheme(mode, icon);
+  localStorage.setItem("theme", mode);
 
   if (!TOKEN) {
     $("#auth-in-btn").show();
@@ -43,13 +66,14 @@ $(window).on("load", () => {
 const $themeToggler = $("#theme-toggler");
 
 $themeToggler.on("click", () => {
-  let theme = THEME === "dark" ? "light" : "dark";
-
-  localStorage.setItem("theme", theme);
-  window.location.reload();
+  const [mode, icon] = getTheme();
+  const currentThemeMode = mode === "light" ? "dark" : "light";
+  const currentIcon = icon === "light" ? "dark" : "light";
+  setupTheme(currentThemeMode, currentIcon);
+  localStorage.setItem("theme", currentThemeMode);
 });
 
-/**
- * @returns {string}
- */
-export let getProjectPath = () => window.location.pathname;
+$("#auth-out-btn").on("click", () => {
+  localStorage.removeItem("token");
+  window.location.reload();
+});

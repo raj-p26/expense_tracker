@@ -1,3 +1,6 @@
 RewriteEngine On
 RewriteCond %{REQUEST_FILENAME}.html -f
-RewriteRule ^(.*)$ $1.html [L]
+RewriteRule ^index$ index.html [L]
+RewriteRule ^incomes$ incomes.html [L]
+RewriteRule ^expenses$ expenses.html [L]
+RewriteRule ^auth$ auth.html [L]

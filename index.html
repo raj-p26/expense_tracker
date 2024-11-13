@@ -19,31 +19,45 @@
           class="navbar-toggler"
           type="button"
           data-bs-toggle="collapse"
-          data-bs-target="#navbarNav"
-          aria-controls="navbarNav"
+          data-bs-target="#navbarnav"
+          aria-controls="navbarnav"
           aria-expanded="false"
-          aria-label="Toggle navigation"
+          aria-label="toggle navigation"
         >
           <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-          <ul class="navbar-nav">
+        <div class="collapse navbar-collapse" id="navbarnav">
+          <ul class="navbar-nav me-auto">
             <li class="nav-item">
               <a
                 class="nav-link active"
                 aria-current="page"
-                href="./index.html"
+                href="/expense-tracker/index"
+                >Home</a
               >
-                Home
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/expense-tracker/incomes"> Incomes </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/expense-tracker/expenses">
+                Expenses
               </a>
             </li>
-            <li class="nav-item">
-              <a class="nav-link" href="./incomes">Incomes</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="./expenses">Expenses</a>
-            </li>
           </ul>
+          <button class="btn btn-primary me-2" id="theme-toggler">
+            <img
+              src="./images/dark_mode.svg"
+              id="theme-icon"
+              alt="Theme Toggler Icon"
+            />
+          </button>
+          <button class="btn btn-primary me-2" id="auth-in-btn">
+            Login/Signup
+          </button>
+          <button class="btn btn-outline-danger" id="auth-out-btn">
+            Logout
+          </button>
         </div>
       </div>
     </nav>
