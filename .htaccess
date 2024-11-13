@@ -1,3 +1,6 @@
+# .htaccess file
+# I used this file because I was working with Apache using XAMPP to serve these html, js files locally.
+
 RewriteEngine On
 RewriteCond %{REQUEST_FILENAME}.html -f
 RewriteRule ^index$ index.html [L]

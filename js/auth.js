@@ -1,3 +1,5 @@
+import { to, SERVER_URL } from "./app.js";
+
 $(window).on("load", () => {
   $("#login-modal").modal("show");
 });
@@ -11,7 +13,7 @@ $("#login-form").on("submit", async (event) => {
   };
 
   try {
-    const res = await fetch("http://localhost:8000/auth/login", {
+    const res = await fetch(`${SERVER_URL}/auth/login`, {
       method: "post",
       headers: {
         "Content-Type": "application/json",
@@ -23,7 +25,7 @@ $("#login-form").on("submit", async (event) => {
       const body = await res.json();
       localStorage.setItem("token", body.token);
 
-      window.location.href = "/expense-tracker/";
+      to("/");
     } else {
       alert("Server error");
       console.log(res.body);
@@ -43,7 +45,7 @@ $("#register-form").on("submit", async (event) => {
   };
 
   try {
-    const res = await fetch("http://localhost:8000/auth/register", {
+    const res = await fetch(`${SERVER_URL}/auth/register`, {
       method: "post",
       headers: {
         "Content-Type": "application/json",
@@ -54,7 +56,7 @@ $("#register-form").on("submit", async (event) => {
     const body = await res.json();
     localStorage.setItem("token", body.token);
 
-    window.location.href = "/expense-tracker/";
+    to("/");
   } catch (error) {
     alert("Some error occured!");
     console.log(error);

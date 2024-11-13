@@ -1,5 +1,25 @@
 import "./jquery.js";
 
+export const SERVER_URL = "http://localhost:8000";
+
+/**
+ * Returns the absolute project path
+ * @returns {string}
+ */
+export let getProjectPath = () => window.location.pathname;
+
+/**
+ * @param {string} expected expected path
+ * @returns true if the path ends with `expected` false otherwise
+ */
+export let isPath = (expected) => getProjectPath().endsWith(expected);
+
+/**
+ * @param {string} path path you want to go
+ * @returns URL of the current Location object
+ */
+export let to = (path) => (window.location.href = `/expense-tracker${path}`);
+
 const USER_TOKEN = localStorage.getItem("token");
 const TOKEN = localStorage.getItem("token");
 
@@ -18,13 +38,7 @@ const setupTheme = (theme, icon) => {
   $("img#theme-icon").attr("src", `./images/${icon}_mode.svg`);
 };
 
-/**
- * @returns {string}
- */
-export let getProjectPath = () => window.location.pathname;
-
-if (!USER_TOKEN && !getProjectPath().endsWith("/auth"))
-  location.href = "./auth";
+if (!USER_TOKEN && !isPath("/auth")) to("/auth");
 
 $(window).on("load", () => {
   const [mode, icon] = getTheme();
@@ -69,6 +83,7 @@ $themeToggler.on("click", () => {
   const [mode, icon] = getTheme();
   const currentThemeMode = mode === "light" ? "dark" : "light";
   const currentIcon = icon === "light" ? "dark" : "light";
+
   setupTheme(currentThemeMode, currentIcon);
   localStorage.setItem("theme", currentThemeMode);
 });
