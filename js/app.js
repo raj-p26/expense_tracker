@@ -1,6 +1,7 @@
 import "./jquery.js";
 
 export const SERVER_URL = "http://localhost:8000";
+const USERNAME = localStorage.getItem("username");
 
 /**
  * Returns the absolute project path
@@ -20,8 +21,7 @@ export let isPath = (expected) => getProjectPath().endsWith(expected);
  */
 export let to = (path) => (window.location.href = `/expense-tracker${path}`);
 
-const USER_TOKEN = localStorage.getItem("token");
-const TOKEN = localStorage.getItem("token");
+export const USER_TOKEN = localStorage.getItem("token");
 
 /**
  * @returns {[string, string]} theme mode and icon
@@ -45,13 +45,15 @@ $(window).on("load", () => {
   setupTheme(mode, icon);
   localStorage.setItem("theme", mode);
 
-  if (!TOKEN) {
+  if (!USER_TOKEN) {
     $("#auth-in-btn").show();
     $("#auth-out-btn").hide();
   } else {
     $("#auth-out-btn").show();
     $("#auth-in-btn").hide();
   }
+
+  $("#nav-username").text(`Hello, ${USERNAME || "User"}`);
 });
 
 (() => {
@@ -90,5 +92,6 @@ $themeToggler.on("click", () => {
 
 $("#auth-out-btn").on("click", () => {
   localStorage.removeItem("token");
+  localStorage.removeItem("theme");
   window.location.reload();
 });

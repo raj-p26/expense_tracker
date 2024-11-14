@@ -24,6 +24,7 @@ $("#login-form").on("submit", async (event) => {
     if (res.ok) {
       const body = await res.json();
       localStorage.setItem("token", body.token);
+      localStorage.setItem("username", body.username);
 
       to("/");
     } else {
@@ -55,6 +56,7 @@ $("#register-form").on("submit", async (event) => {
 
     const body = await res.json();
     localStorage.setItem("token", body.token);
+    localStorage.setItem("username", body.username);
 
     to("/");
   } catch (error) {

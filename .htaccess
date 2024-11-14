@@ -1,9 +1,17 @@
 # .htaccess file
 # I used this file because I was working with Apache using XAMPP to serve these html, js files locally.
 
+DirectoryIndex incomes.html
 RewriteEngine On
 RewriteCond %{REQUEST_FILENAME}.html -f
-RewriteRule ^index$ index.html [L]
-RewriteRule ^incomes$ incomes.html [L]
+RewriteRule ^/$ incomes.html [L]
 RewriteRule ^expenses$ expenses.html [L]
 RewriteRule ^auth$ auth.html [L]
+
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/html text/plain application/javascript text/css
+</IfModule>
+
+<IfModule mod_headers.c>
+    Header set Access-Control-Allow-Origin "*"
+</IfModule>
