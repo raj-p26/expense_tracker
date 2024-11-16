@@ -1,0 +1,62 @@
+import { useEffect, useState } from "react";
+import { Link, useLocation } from "react-router-dom";
+import { Container, Navbar, Nav, Button } from "react-bootstrap";
+
+export function AppNavbar() {
+  const THEME: "light" | "dark" = localStorage.theme || "light";
+  const [currentTheme, setCurrentTheme] = useState<"light" | "dark">(THEME);
+  const location = useLocation();
+  const path = location.pathname;
+
+  useEffect(() => {
+    document.querySelector("html")!.setAttribute("data-bs-theme", THEME);
+  }, [THEME]);
+
+  console.log("nav rendered");
+
+  const toggleTheme = () => {
+    const updateTheme = currentTheme === "dark" ? "light" : "dark";
+    setCurrentTheme(updateTheme);
+    localStorage.theme = updateTheme;
+  };
+
+  return (
+    <Navbar expand="lg" fixed="top" className="bg-body-tertiary">
+      <Container>
+        <Navbar.Brand>ExpenseTracker</Navbar.Brand>
+        <Navbar.Toggle aria-controls="basic-navbar-nav" />
+        <Navbar.Collapse id="basic-navbar-nav">
+          <Nav className="me-auto">
+            <Nav.Item>
+              <Link
+                to={"/"}
+                className={"nav-link " + (path === "/" ? "active" : "")}
+              >
+                Incomes
+              </Link>
+            </Nav.Item>
+            <Nav.Item>
+              <Link
+                to={"/expenses"}
+                className={"nav-link " + (path === "/expenses" ? "active" : "")}
+              >
+                Expenses
+              </Link>
+            </Nav.Item>
+          </Nav>
+          <Nav.Item>
+            <Button onClick={toggleTheme}>
+              <i
+                className={
+                  currentTheme === "dark"
+                    ? "bi bi-brightness-high-fill"
+                    : "bi bi-moon-fill"
+                }
+              ></i>
+            </Button>
+          </Nav.Item>
+        </Navbar.Collapse>
+      </Container>
+    </Navbar>
+  );
+}
