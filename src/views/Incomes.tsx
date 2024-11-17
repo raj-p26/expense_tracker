@@ -1,36 +1,36 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Button, Form, Modal, Table } from "react-bootstrap";
-import io from "socket.io-client";
+import io, { Socket } from "socket.io-client";
 
 export function Incomes() {
-  const socket = io("ws://localhost:8000/incomes", {
-    auth: { token: localStorage.token },
-  });
+  const socket = useRef<Socket | null>(null);
 
   const [incomes, setIncomes] = useState<any[]>([]);
   useEffect(() => {
-    socket.on("initial data", (data) => {
+    socket.current = io("ws://localhost:8000/incomes", {
+      auth: { token: localStorage.token },
+    });
+
+    socket.current.on("initial data", (data: any) => {
       setIncomes([...data]);
     });
 
-    socket.on("incomes:append", (data) => {
+    socket.current.on("incomes:append", (data: any) => {
       setIncomes((prevValue) => [...prevValue, data]);
     });
 
-    socket.on("income:deleted", (id) => {
+    socket.current.on("income:deleted", (id: any) => {
       setIncomes((prevIncomes) => prevIncomes.filter((i) => i.id !== id));
     });
 
-    socket.on("income:updated", (data) => {
+    socket.current.on("income:updated", (data: any) => {
       setIncomes((prevIncomes) =>
-        prevIncomes.map((i) =>
-          i.id === data.id ? { ...i, ...data } : { ...i }
-        )
+        prevIncomes.map((i) => (i.id === data.id ? { ...data } : { ...i }))
       );
     });
 
     return function () {
-      socket.disconnect();
+      socket.current?.disconnect();
     };
   }, []);
 
@@ -47,9 +47,9 @@ export function Incomes() {
 
     try {
       if (income.id) {
-        socket.emit("incomes:update", income);
+        socket.current?.emit("incomes:update", income);
       } else {
-        socket.emit("incomes:add", income);
+        socket.current?.emit("incomes:add", income);
       }
       setShow(false);
     } catch (e) {
@@ -158,7 +158,9 @@ export function Incomes() {
                 <td>
                   <Button
                     variant="danger"
-                    onClick={() => socket.emit("incomes:delete", in_.id)}
+                    onClick={() =>
+                      socket.current?.emit("incomes:delete", in_.id)
+                    }
                   >
                     DELETE
                   </Button>
