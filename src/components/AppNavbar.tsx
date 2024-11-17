@@ -1,18 +1,17 @@
 import { useEffect, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Container, Navbar, Nav, Button } from "react-bootstrap";
 
 export function AppNavbar() {
   const THEME: "light" | "dark" = localStorage.theme || "light";
   const [currentTheme, setCurrentTheme] = useState<"light" | "dark">(THEME);
   const location = useLocation();
+  const navigate = useNavigate();
   const path = location.pathname;
 
   useEffect(() => {
-    document.querySelector("html")!.setAttribute("data-bs-theme", THEME);
-  }, [THEME]);
-
-  console.log("nav rendered");
+    document.querySelector("html")!.setAttribute("data-bs-theme", currentTheme);
+  }, [currentTheme]);
 
   const toggleTheme = () => {
     const updateTheme = currentTheme === "dark" ? "light" : "dark";
@@ -44,7 +43,7 @@ export function AppNavbar() {
               </Link>
             </Nav.Item>
           </Nav>
-          <Nav.Item>
+          <Nav.Item className="me-3">
             <Button onClick={toggleTheme}>
               <i
                 className={
@@ -53,6 +52,18 @@ export function AppNavbar() {
                     : "bi bi-moon-fill"
                 }
               ></i>
+            </Button>
+          </Nav.Item>
+          <Nav.Item>
+            <Button
+              variant="outline-danger"
+              onClick={() => {
+                localStorage.removeItem("token");
+                localStorage.removeItem("username");
+                navigate("/auth");
+              }}
+            >
+              Logout
             </Button>
           </Nav.Item>
         </Navbar.Collapse>
