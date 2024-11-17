@@ -43,6 +43,9 @@ export function AppNavbar() {
               </Link>
             </Nav.Item>
           </Nav>
+          <Navbar.Text className="me-3">
+            Hello: {localStorage.username}
+          </Navbar.Text>
           <Nav.Item className="me-3">
             <Button onClick={toggleTheme}>
               <i

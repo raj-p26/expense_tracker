@@ -31,10 +31,12 @@ export function Auth() {
 
     if (!form.checkValidity()) {
       e.stopPropagation();
-      return;
     }
 
     setLoginValidated(true);
+
+    if (!loginValidated) return;
+
     try {
       const res = await fetch(`${BASE_URL}/auth/login`, {
         method: "post",
@@ -69,10 +71,12 @@ export function Auth() {
 
     if (!form.checkValidity()) {
       e.stopPropagation();
-      return;
     }
 
     setRegisterValidated(true);
+
+    if (!registerValidated) return;
+
     try {
       const res = await fetch(`${BASE_URL}/auth/register`, {
         method: "post",
